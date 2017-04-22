@@ -45,14 +45,14 @@ function getPosition() {
 }
 
 function positionIsTaken(pos) {
-  goldPostions.forEach(function(thisPos) {
+  blockedPositions.forEach(function(thisPos) {
     if(pos.x == thisPos.x && pos.y == thisPos.y) {
       console.log('dupe');
       return true;
     }
   });
 
-  blockedPositions.forEach(function(thisPos) {
+  goldPostions.forEach(function(thisPos) {
     if(pos.x == thisPos.x && pos.y == thisPos.y) {
       console.log('dupe');
       return true;
