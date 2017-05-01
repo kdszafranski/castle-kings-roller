@@ -5,17 +5,48 @@ const ROWS          = 8;
 var goldPostions = [];
 var blockedPositions = [];
 
+function Point(x, y) {
+  this.x = parseInt(x);
+  this.y = parseInt(y);
+}
+
 $(document).ready(function() {
   console.log('loaded');
 
-  $("#generateButton").on("click", reset);
-
   reset();
+
+  // Event listeners
+  $("#generateButton").on("click", reset);
+  $("#blocked-container").on("click", ".removePoint", removePoint);
+  $("#addBlockedSpace").on("click", addBlockedSpace);
+
+  $("#checkDupe").on("click", function(e) {
+    var p = $("#pointToCheck").val().split(",");
+    var point = new Point(p[0], p[1]);
+    console.log('Duplicate? : ', positionIsTaken(point));
+
+  });
+
+
 });
 
 function reset() {
+  goldPostions = [];
+  blockedPositions = [];
   generateBlockedPostions();
   generateGoldPostions();
+  updateDOM();
+}
+
+function removePoint(e) {
+  e.preventDefault();
+  console.log($(this).data("id"));
+  blockedPositions.splice($(this).data("id"), 1);
+  updateDOM();
+}
+
+function addBlockedSpace() {
+  blockedPositions.push(getPosition());
   updateDOM();
 }
 
@@ -34,45 +65,44 @@ function generateBlockedPostions() {
 }
 
 function getPosition() {
-  var position = {};
-  position.x = randomNumber(1, ROWS);
-  position.y = randomNumber(1, ROWS);
+  var position = new Point(randomNumber(1, ROWS), randomNumber(1, ROWS));
+
   if(positionIsTaken(position)) {
-    position = getPosition();
+    return getPosition();
   }
 
   return position;
 }
 
 function positionIsTaken(pos) {
-  blockedPositions.forEach(function(thisPos) {
+  for (var i = 0; i < blockedPositions.length; i++) {
+    var thisPos = blockedPositions[i];
     if(pos.x == thisPos.x && pos.y == thisPos.y) {
-      console.log('dupe');
+      console.log('dupe blocked');
       return true;
     }
-  });
+  }
 
-  goldPostions.forEach(function(thisPos) {
+  for (var j = 0; j < goldPostions.length; j++) {
+    var thisPos = goldPostions[j];
     if(pos.x == thisPos.x && pos.y == thisPos.y) {
-      console.log('dupe');
+      console.log('dupe gold');
       return true;
     }
-  });
+  }
 
   return false;
 }
 
 function updateDOM() {
-  $("#gold-container").empty();
-  goldPostions.forEach(function(position) {
-    console.log(position);
-    $("#gold-container").append('<li>' + position.x + ', ' + position.y + '</li>');
+  $("#blocked-container").empty();
+  blockedPositions.forEach(function(position, i) {
+    $("#blocked-container").append('<li><a class="removePoint" data-id="' + i +'">' + position.x + ', ' + position.y + '</a></li>');
   });
 
-  $("#blocked-container").empty();
-  blockedPositions.forEach(function(position) {
-    console.log(position);
-    $("#blocked-container").append('<li>' + position.x + ', ' + position.y + '</li>');
+  $("#gold-container").empty();
+  goldPostions.forEach(function(position) {
+    $("#gold-container").append('<li>' + position.x + ', ' + position.y + '</li>');
   });
 }
 

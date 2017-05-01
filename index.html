@@ -5,6 +5,7 @@
     <title>Rollin' Deep</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css" />
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -22,13 +23,15 @@
 
         <div class="col-md-6">
           <h2>Blocked Spaces</h2>
+          <button id="addBlockedSpace">Add Blocked Space</button>
           <ul id="blocked-container"></ul>
           <h2>Gold Positions</h2>
           <ul id="gold-container"></ul>
         </div>
         <div class="col-md-6">
           <h2>Actions</h2>
-          <button id="generateButton">Reset Positions</button>
+          <div><input type="text" id="pointToCheck" /><button id="checkDupe">Check</button></div>
+          <div><button id="generateButton">Reset Positions</button></div>
         </div>
       </div>
     </main>
