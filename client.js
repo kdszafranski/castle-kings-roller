@@ -17,32 +17,42 @@ $(document).ready(function() {
 
   // Event listeners
   $("#generateButton").on("click", reset);
-  $("#blocked-container").on("click", ".removePoint", removePoint);
+  $("#blocked-container").on("click", ".removeBlockedSpace", removeBlockedSpace);
+  $("#gold-container").on("click", ".removeGoldSpace", removeGoldSpace);
   $("#addBlockedSpace").on("click", addBlockedSpace);
+  $("#addGoldSpace").on("click", addGoldSpace);
 
   $("#checkDupe").on("click", function(e) {
     var p = $("#pointToCheck").val().split(",");
     var point = new Point(p[0], p[1]);
     console.log('Duplicate? : ', positionIsTaken(point));
-
   });
-
 
 });
 
 function reset() {
   goldPostions = [];
   blockedPositions = [];
-  generateBlockedPostions();
-  generateGoldPostions();
+  generateStartingBlockedPostions();
+  generateStartingGoldPostions();
   updateDOM();
 }
 
-function removePoint(e) {
+function removeBlockedSpace(e) {
   e.preventDefault();
-  console.log($(this).data("id"));
   blockedPositions.splice($(this).data("id"), 1);
   updateDOM();
+}
+
+function removeGoldSpace(e) {
+  e.preventDefault();
+  console.log($(this).data());
+  goldPostions.splice($(this).data("id"), 1);
+  updateDOM();
+}
+
+function removePoint(array, index) {
+  array.splice(index, 1);
 }
 
 function addBlockedSpace() {
@@ -50,14 +60,19 @@ function addBlockedSpace() {
   updateDOM();
 }
 
-function generateGoldPostions() {
+function addGoldSpace() {
+  goldPostions.push(getPosition());
+  updateDOM();
+}
+
+function generateStartingGoldPostions() {
   goldPostions = [];
   for (var i = 0; i < START_GOLD; i++) {
     goldPostions.push(getPosition());
   }
 }
 
-function generateBlockedPostions() {
+function generateStartingBlockedPostions() {
   blockedPositions = [];
   for (var i = 0; i < START_BLOCKED; i++) {
     blockedPositions.push(getPosition());
@@ -97,12 +112,12 @@ function positionIsTaken(pos) {
 function updateDOM() {
   $("#blocked-container").empty();
   blockedPositions.forEach(function(position, i) {
-    $("#blocked-container").append('<li><a class="removePoint" data-id="' + i +'">' + position.x + ', ' + position.y + '</a></li>');
+    $("#blocked-container").append('<li><a class="remove removeBlockedSpace" data-id="' + i +'">' + position.x + ', ' + position.y + '</a></li>');
   });
 
   $("#gold-container").empty();
-  goldPostions.forEach(function(position) {
-    $("#gold-container").append('<li>' + position.x + ', ' + position.y + '</li>');
+  goldPostions.forEach(function(position, j) {
+    $("#gold-container").append('<li><a class="remove removeGoldSpace" data-id="' + j +'">' + position.x + ', ' + position.y + '</a></li>');
   });
 }
 
