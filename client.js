@@ -5,11 +5,6 @@ const ROWS          = 8;
 var goldPostions = [];
 var blockedPositions = [];
 
-function Point(x, y) {
-  this.x = parseInt(x);
-  this.y = parseInt(y);
-}
-
 $(document).ready(function() {
   console.log('loaded');
 
@@ -29,6 +24,7 @@ $(document).ready(function() {
   });
 
 });
+
 
 function reset() {
   goldPostions = [];
@@ -123,4 +119,10 @@ function updateDOM() {
 
 function randomNumber(min, max) {
 	return Math.floor(Math.random() * (1 + max - min) + min);
+}
+
+
+function Point(x, y) {
+  this.x = parseInt(x);
+  this.y = parseInt(y);
 }
