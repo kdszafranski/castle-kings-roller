@@ -16,6 +16,10 @@ $(document).ready(function() {
   $("#gold-container").on("click", ".removeGoldSpace", removeGoldSpace);
   $("#addBlockedSpace").on("click", addBlockedSpace);
   $("#addGoldSpace").on("click", addGoldSpace);
+  $('.flex-container').on('click', '.tile', function() {
+    console.log('clicked tile: ', $(this).data('coords'));
+  });
+
 
   $("#checkDupe").on("click", function(e) {
     var p = $("#pointToCheck").val().split(",");
@@ -26,11 +30,32 @@ $(document).ready(function() {
 });
 
 
+function buildBoard() {
+  var $el;
+
+  for(var i = 0; i < ROWS; i++) {
+    $('main').append('<div class="flex-container">');
+    $el = $('main').children().last();
+
+    // each row, append four cardsPerRow
+    for(var j = 0; j < ROWS; j++) {
+      // check if there is something here
+
+      $el.append('<div class="tile"></div>');
+      $last = $el.children().last();
+      $last.data('coords', {x: j, y: i});
+
+    }
+  }
+}
+
+
 function reset() {
   goldPostions = [];
   blockedPositions = [];
   generateStartingBlockedPostions();
   generateStartingGoldPostions();
+  // buildBoard();
   updateDOM();
 }
 
